@@ -345,15 +345,13 @@ static void intelli_plug_input_event(struct input_handle *handle,
 	pr_info("intelli_plug touched!\n");
 #endif
 
-	mutex_lock(&intelli_plug_mutex);
-	cancel_delayed_work_sync(&intelli_plug_work);
+	cancel_delayed_work(&intelli_plug_work);
 
 	sampling_time = BUSY_SAMPLING_MS;
 	busy_persist_count = BUSY_PERSISTENCE;
 
         schedule_delayed_work_on(0, &intelli_plug_work,
                 msecs_to_jiffies(sampling_time));
-	mutex_unlock(&intelli_plug_mutex);
 }
 
 static int input_dev_filter(const char *input_dev_name)
